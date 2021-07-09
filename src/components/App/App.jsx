@@ -4,10 +4,16 @@ import { StyledApp } from "./App.styled";
 import { Searchbar } from "../Searchbar/Searchbar";
 import { ImageGallery } from "../ImageGallery/ImageGallery";
 import { Button } from "../Button/Button";
+import { Modal } from "../Modal/Modal";
 import { Api } from "../../constants/Api";
 
 export class App extends Component {
-  state = { searchQuery: "", page: 1, images: [] };
+  state = {
+    searchQuery: "",
+    page: 1,
+    images: [],
+    selectedImage: null,
+  };
 
   async componentDidUpdate(prevProps, prevState) {
     const { searchQuery, page } = this.state;
@@ -18,19 +24,14 @@ export class App extends Component {
       this.setState((prevState) => {
         return { images: [...prevState.images, ...images] };
       });
-    }
 
-    if (page > 1) {
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: "smooth",
-      });
+      page > 1 &&
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: "smooth",
+        });
     }
   }
-
-  resetState = () => {
-    this.setState({ searchQuery: "", page: 1, images: [] });
-  };
 
   getImages = async () => {
     const { searchQuery, page } = this.state;
@@ -41,9 +42,26 @@ export class App extends Component {
     return data.hits;
   };
 
+  resetState = () => {
+    this.setState({
+      searchQuery: "",
+      page: 1,
+      images: [],
+      selectedImage: null,
+    });
+  };
+
+  closeModal = () => {
+    this.setState({ selectedImage: null });
+  };
+
   onSubmit = (searchQuery) => {
     this.resetState();
     this.setState({ searchQuery });
+  };
+
+  onImageSelect = (image) => {
+    this.setState({ selectedImage: image });
   };
 
   onLoadMore = () => {
@@ -51,16 +69,15 @@ export class App extends Component {
   };
 
   render() {
-    const { images } = this.state;
+    const { images, selectedImage } = this.state;
 
     return (
       <StyledApp>
         <Searchbar onSubmit={this.onSubmit} />
-        <ImageGallery images={images} />
-        {images.length > 0 && (
-          <>
-            <Button onClick={this.onLoadMore} />
-          </>
+        <ImageGallery images={images} onClick={this.onImageSelect} />
+        {images.length > 0 && <Button onClick={this.onLoadMore} />}
+        {selectedImage && (
+          <Modal image={selectedImage} onClose={this.closeModal} />
         )}
       </StyledApp>
     );
