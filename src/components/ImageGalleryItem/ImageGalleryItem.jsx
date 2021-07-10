@@ -4,6 +4,12 @@ import { Item, Image } from "./ImageGalleryItem.styled";
 import pendingImage from "../../images/pendingImage.png";
 
 export class ImageGalleryItem extends Component {
+  static propTypes = {
+    previewImage: PropTypes.string.isRequired,
+    tags: PropTypes.string.isRequired,
+    onImageSelect: PropTypes.func.isRequired,
+  };
+
   state = { loaded: false };
 
   handleImageLoad = () => {
@@ -12,6 +18,7 @@ export class ImageGalleryItem extends Component {
 
   render() {
     const { loaded } = this.state;
+
     const { previewImage, tags, onImageSelect } = this.props;
 
     return (
@@ -26,8 +33,3 @@ export class ImageGalleryItem extends Component {
     );
   }
 }
-
-ImageGalleryItem.propTypes = {
-  previewImage: PropTypes.string.isRequired,
-  tags: PropTypes.string.isRequired,
-};

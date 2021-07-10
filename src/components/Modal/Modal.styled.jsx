@@ -23,9 +23,10 @@ export const ModalWindow = styled.div`
   justify-content: center;
   align-items: center;
   width: 70vw;
-  /* height: auto; */
-  min-height: 100%;
+  height: auto;
   margin: auto;
+  border-radius: 10px;
+  overflow: hidden;
 `;
 
 export const CloseButton = styled.button`

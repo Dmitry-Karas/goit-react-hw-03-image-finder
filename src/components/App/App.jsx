@@ -6,6 +6,7 @@ import { Button } from "../Button/Button";
 import { Modal } from "../Modal/Modal";
 import { Spinner } from "../Spinner/Spinner";
 import { Api } from "../../services/api";
+import { Notify } from "../../services/notifications";
 
 export class App extends Component {
   state = {
@@ -29,15 +30,14 @@ export class App extends Component {
           throw new Error();
         }
 
-        this.setState((prevState) => {
-          return {
-            images: [...prevState.images, ...images],
-            status: "resolve",
-          };
-        });
-      } catch (error) {
+        this.setState((prevState) => ({
+          images: [...prevState.images, ...images],
+          status: "resolve",
+        }));
+      } catch (err) {
         this.setState({ status: "idle" });
-        console.log(error, `по запросу ${searchQuery} ничего не найдено`);
+
+        Notify.notFound(searchQuery);
       }
 
       page > 1 &&
@@ -97,17 +97,8 @@ export class App extends Component {
           <StyledApp>
             <Searchbar onSubmit={this.onSubmit} />
             <ImageGallery images={images} onImageSelect={this.onImageSelect} />
-            {images.length > 0 && <Button onClick={this.onLoadMore} />}
-
             <Spinner />
-            {/* <LoaderContainer>
-              <Loader
-                type="ThreeDots"
-                color="#3f51b5"
-                height={200}
-                width={200}
-              />
-            </LoaderContainer> */}
+            {images.length > 0 && <Button onClick={this.onLoadMore} />}
           </StyledApp>
         );
 

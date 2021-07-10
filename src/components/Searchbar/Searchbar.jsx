@@ -1,7 +1,10 @@
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Header, Form, Button, ButtonLabel, Input } from "./Searchbar.styled";
 
 export class Searchbar extends Component {
+  static propTypes = { onSubmit: PropTypes.func.isRequired };
+
   state = { value: "" };
 
   handleInputChange = (e) => {
