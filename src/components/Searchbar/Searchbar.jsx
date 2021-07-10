@@ -30,7 +30,11 @@ export class Searchbar extends Component {
           <Button>
             <ButtonLabel>Search</ButtonLabel>
           </Button>
-          <Input value={value} onChange={this.handleInputChange} />
+          <Input
+            value={value}
+            onChange={this.handleInputChange}
+            placeholder="Search images"
+          />
         </Form>
       </Header>
     );
