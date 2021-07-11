@@ -71,10 +71,12 @@ export class App extends Component {
 
   onModalClose = () => {
     this.setState({ selectedImage: null });
+    document.body.classList.remove("modal-open");
   };
 
   onImageSelect = (src, alt) => {
     this.setState({ selectedImage: { src, alt } });
+    document.body.classList.add("modal-open");
   };
 
   onLoadMore = () => {
